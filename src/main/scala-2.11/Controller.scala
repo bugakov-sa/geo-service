@@ -7,24 +7,17 @@ object Controller {
 
   import Entity._
 
-  final case class CreateUserRequest(lat: Float, lon: Float)
-
-  final case class UpdateUserRequest(userId: Long, lat: Float, lon: Float)
-
-  final case class DeleteUserRequest(userId: Long)
-
-  final case class SelectUserRequest(userId: Long)
-
-  final case class StatRequest(lat: Float, lon: Float)
-
   final case class UserUpdatedResponse(userId: Long, oldPoint: Option[Point], newPoint: Point)
 
   final case class UserDeletedResponse(userId: Long, point: Point)
 
   final case class UserSelectedResponse(userId: Long, point: Point)
 
+  final case class TestLocationResponse(answer: String)
+
   final case class ZoneStatResponse(count: Long)
 
+  val NOT_FOUND_RESPONSE = (StatusCodes.NotFound, "Not found")
 }
 
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
@@ -36,10 +29,12 @@ trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val userUpdatedFormat = jsonFormat3(UserUpdatedResponse)
   implicit val userDeletedFormat = jsonFormat2(UserDeletedResponse)
   implicit val userSelectedFormat = jsonFormat2(UserSelectedResponse)
-  implicit val zoneStatResponse = jsonFormat1(ZoneStatResponse)
+  implicit val testLocationFormat = jsonFormat1(TestLocationResponse)
+  implicit val zoneStatFormat = jsonFormat1(ZoneStatResponse)
 }
 
-class Controller(usersDao: UsersDao, zonesStat: ZonesStat) extends Directives with JsonSupport {
+class Controller(usersDao: UsersDao, zonesStat: ZonesStat, testLocationService: TestLocationService
+                ) extends Directives with JsonSupport {
 
   import Controller._
   import Entity._
@@ -47,39 +42,48 @@ class Controller(usersDao: UsersDao, zonesStat: ZonesStat) extends Directives wi
   val route =
     path("users" / "update") {
       get {
-        parameters('id.as[Long], 'lat.as[Float], 'lon.as[Float]).as(UpdateUserRequest) { request =>
-          val newPoint = Point(request.lat, request.lon)
-          val userId = request.userId
+        parameters('id.as[Long], 'lat.as[Float], 'lon.as[Float]) { (userId, lat, lon) =>
+          val newPoint = Point(lat, lon)
           val oldPoint = usersDao.update(userId, newPoint)
-          complete((StatusCodes.OK, UserUpdatedResponse(userId, oldPoint, newPoint)))
+          complete(UserUpdatedResponse(userId, oldPoint, newPoint))
         }
       }
     } ~ path("users" / "delete") {
       get {
-        parameters('id.as[Long]).as(DeleteUserRequest) { request =>
+        parameters('id.as[Long]) { userId =>
           complete(
-            usersDao.delete(request.userId) match {
-              case None => (StatusCodes.NotFound, "Not found")
-              case Some(point) => (StatusCodes.OK, UserDeletedResponse(request.userId, point))
+            usersDao.delete(userId) match {
+              case None => NOT_FOUND_RESPONSE
+              case Some(point) => UserDeletedResponse(userId, point)
             }
           )
         }
       }
     } ~ path("users" / "select") {
       get {
-        parameters('id.as[Long]).as(SelectUserRequest) { request => complete(
-          usersDao.select(request.userId) match {
-            case None => (StatusCodes.NotFound, "Not found")
-            case Some(point) => (StatusCodes.OK, UserSelectedResponse(request.userId, point))
+        parameters('id.as[Long]) { userId => complete(
+          usersDao.select(userId) match {
+            case None => NOT_FOUND_RESPONSE
+            case Some(point) => UserSelectedResponse(userId, point)
+          })
+        }
+      }
+    } ~ path("users" / "location") {
+      get {
+        parameters('id.as[Long], 'lat.as[Float], 'lon.as[Float]) { (userId, lat, lon) => complete(
+          testLocationService.test(userId, Point(lat, lon)) match {
+            case None => NOT_FOUND_RESPONSE
+            case Some(true) => TestLocationResponse("Near")
+            case Some(false) => TestLocationResponse("Away")
           })
         }
       }
     } ~ path("zones" / "count") {
       get {
-        parameters('lat.as[Float], 'lon.as[Float]).as(StatRequest) { request => complete(
-          zonesStat.count(Point(request.lat, request.lon)) match {
-            case None => (StatusCodes.NotFound, "Not found")
-            case Some(count) => (StatusCodes.OK, ZoneStatResponse(count))
+        parameters('lat.as[Float], 'lon.as[Float]) { (lat, lon) => complete(
+          zonesStat.count(Point(lat, lon)) match {
+            case None => NOT_FOUND_RESPONSE
+            case Some(count) => ZoneStatResponse(count)
           })
         }
       }

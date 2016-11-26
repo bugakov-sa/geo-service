@@ -1,6 +1,6 @@
-trait UsersListener {
+import Entity.UserEvent
 
-  import Entity._
+trait UsersListener {
 
   def fire(event: UserEvent)
 }

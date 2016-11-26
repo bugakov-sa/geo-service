@@ -1,6 +1,6 @@
-abstract trait ZonesRef {
+import Entity.{ZoneKey, ZoneData}
 
-  import Entity._
+trait ZonesRef {
 
   def select(key: ZoneKey): Option[ZoneData]
 

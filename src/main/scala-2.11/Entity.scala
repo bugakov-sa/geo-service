@@ -6,7 +6,7 @@ object Entity {
 
   case class ZoneData(distanceError: Float)
 
-  case class ZoneReport(count:Int)
+  case class ZoneReport(count: Int)
 
   abstract trait UserEvent
 

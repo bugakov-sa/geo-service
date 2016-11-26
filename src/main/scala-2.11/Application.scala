@@ -15,8 +15,9 @@ object Application extends App {
   val usersDao = new InMemoryUsersDao with ListenableUsersDao {
     override protected val listeners = List(zonesStat)
   }
+  val testLocationService = new TestLocationService(usersDao, zonesRef)
   InputData.loadUsers(conf.usersFilePath, usersDao)
-  val controller = new Controller(usersDao, zonesStat)
+  val controller = new Controller(usersDao, zonesStat, testLocationService)
 
   implicit val system = ActorSystem("my-system")
   implicit val materializer = ActorMaterializer()

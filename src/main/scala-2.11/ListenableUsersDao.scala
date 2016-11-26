@@ -1,6 +1,6 @@
-trait ListenableUsersDao extends UsersDao {
+import Entity._
 
-  import Entity._
+trait ListenableUsersDao extends UsersDao {
 
   protected val listeners: Seq[UsersListener]
 

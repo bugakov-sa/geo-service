@@ -1,8 +1,7 @@
 import java.util.concurrent.ConcurrentHashMap
+import Entity._
 
 trait InMemoryUsersDao extends UsersDao {
-
-  import Entity._
 
   private val data = new ConcurrentHashMap[Long, Point]()
 
