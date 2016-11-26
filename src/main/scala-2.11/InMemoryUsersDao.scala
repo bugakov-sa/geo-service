@@ -2,7 +2,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.util.function.BiFunction
 
-class InMemoryUsersDao extends UsersDao {
+trait InMemoryUsersDao extends UsersDao {
 
   import Entity._
 
@@ -26,7 +26,10 @@ class InMemoryUsersDao extends UsersDao {
     if (oldUser != null) Some(oldUser) else None
   }
 
-  override def delete(id: Long): Unit = data.remove(id)
+  override def delete(id: Long): Option[UserData] = {
+    val oldUser = data.remove(id)
+    if (oldUser != null) Some(oldUser) else None
+  }
 
   override def select(id: Long): Option[UserData] = {
     val user = data.get(id)

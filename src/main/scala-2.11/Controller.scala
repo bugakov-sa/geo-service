@@ -66,8 +66,12 @@ class Controller(usersDao: UsersDao) extends Directives with JsonSupport {
     } ~ path("users" / "delete") {
       get {
         parameters('id.as[Long]).as(DeleteUserRequest) { request =>
-          usersDao.delete(request.userId)
-          complete((StatusCodes.OK, UserDeletedResponse(request.userId)))
+          complete(
+            usersDao.delete(request.userId) match {
+              case None => (StatusCodes.NotFound, "Not found")
+              case Some(oldData) => (StatusCodes.OK, UserDeletedResponse(request.userId))
+            }
+          )
         }
       }
     } ~ path("users" / "select") {

@@ -1,3 +1,4 @@
+import Entity.UserEvent
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
@@ -15,7 +16,13 @@ object Application extends App {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  val usersDao = new InMemoryUsersDao()
+  val usersDao = new InMemoryUsersDao with ListenableUsersDao {
+    override protected val listeners: Seq[UsersListener] = List(
+      new UsersListener {
+        override def fire(event: UserEvent): Unit = println(event)
+      }
+    )
+  }
   val controller = new Controller(usersDao)
   val bindingFuture = Http().bindAndHandle(controller.route, conf.host, conf.port)
 
