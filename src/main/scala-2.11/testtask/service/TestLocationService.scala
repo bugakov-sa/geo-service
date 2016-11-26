@@ -1,4 +1,8 @@
-import Entity.{Point, ZoneKey}
+package testtask.service
+
+import testtask.dao.UsersDao
+import testtask.entity.{Point, ZoneKey}
+import testtask.ref.ZonesRef
 
 class TestLocationService(usersDao: UsersDao, zonesRef: ZonesRef) {
   def test(userId: Long, point: Point) = {

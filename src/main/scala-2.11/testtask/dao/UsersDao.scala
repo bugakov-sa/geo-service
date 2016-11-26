@@ -1,4 +1,6 @@
-import Entity.Point
+package testtask.dao
+
+import testtask.entity.Point
 
 trait UsersDao {
 

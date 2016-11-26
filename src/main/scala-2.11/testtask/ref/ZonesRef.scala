@@ -1,4 +1,6 @@
-import Entity.{ZoneKey, ZoneData}
+package testtask.ref
+
+import testtask.entity.{ZoneData, ZoneKey}
 
 trait ZonesRef {
 

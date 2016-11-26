@@ -1,5 +1,9 @@
+package testtask.dao.impl
+
 import java.util.concurrent.ConcurrentHashMap
-import Entity._
+
+import testtask.entity.Point
+import testtask.dao.UsersDao
 
 trait InMemoryUsersDao extends UsersDao {
 

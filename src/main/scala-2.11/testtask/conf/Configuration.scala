@@ -1,3 +1,5 @@
+package testtask.conf
+
 import java.io.File
 import java.nio.file.{Path, Paths}
 

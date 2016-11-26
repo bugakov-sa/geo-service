@@ -1,16 +1,19 @@
+package testtask.conf
+
 import java.nio.file.Path
 
-import Entity.{Point, ZoneData, ZoneKey}
 import com.typesafe.scalalogging.Logger
+import testtask.dao.UsersDao
+import testtask.entity.{Point, ZoneData, ZoneKey}
+import testtask.ref.impl.InMemoryZonesRef
 
-import scala.collection.mutable
 import scala.io.Source
 
 object InputData {
   private val log = Logger("InputData")
 
   def loadZones(zonesFilePath: Path) = {
-    val map = new mutable.HashMap[ZoneKey, ZoneData]()
+    val map = new scala.collection.mutable.HashMap[ZoneKey, ZoneData]()
     val src = Source.fromFile(zonesFilePath.toFile)
     for (line <- src.getLines) {
       try {

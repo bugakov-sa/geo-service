@@ -1,7 +1,14 @@
+package testtask
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.typesafe.scalalogging.Logger
+import conf.{Configuration, InputData}
+import testtask.dao.impl.{InMemoryUsersDao, ListenableUsersDao}
+import testtask.listener.impl.ZonesStatService
+import testtask.rest.Controller
+import testtask.service.TestLocationService
 
 import scala.io.StdIn
 
@@ -11,7 +18,7 @@ object Application extends App {
 
   val conf = Configuration.read
   val zonesRef = InputData.loadZones(conf.zonesFilePath)
-  val zonesStat = new ZonesStat(zonesRef)
+  val zonesStat = new ZonesStatService(zonesRef)
   val usersDao = new InMemoryUsersDao with ListenableUsersDao {
     override protected val listeners = List(zonesStat)
   }

@@ -1,4 +1,7 @@
-import Entity.{ZoneData, ZoneKey}
+package testtask.ref.impl
+
+import testtask.entity.{ZoneData, ZoneKey}
+import testtask.ref.ZonesRef
 
 class InMemoryZonesRef(private val data: Map[ZoneKey, ZoneData]) extends ZonesRef {
 

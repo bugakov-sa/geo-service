@@ -1,4 +1,8 @@
-import Entity._
+package testtask.dao.impl
+
+import testtask.entity._
+import testtask.dao.UsersDao
+import testtask.listener.UsersListener
 
 trait ListenableUsersDao extends UsersDao {
 

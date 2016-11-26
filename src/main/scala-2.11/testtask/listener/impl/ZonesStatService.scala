@@ -1,8 +1,12 @@
+package testtask.listener.impl
+
 import java.util.concurrent.atomic.AtomicLong
 
-import Entity._
+import testtask.entity._
+import testtask.listener.UsersListener
+import testtask.ref.ZonesRef
 
-class ZonesStat(zones: ZonesRef) extends UsersListener {
+class ZonesStatService(zones: ZonesRef) extends UsersListener {
 
   private val stat = init(zones)
 
