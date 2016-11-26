@@ -18,4 +18,5 @@ libraryDependencies ++= Seq(
 )
 
 packAutoSettings
-packResourceDir += (baseDirectory.value / "conf" -> "conf")
+packResourceDir += (baseDirectory.value / "conf" / "assembly" -> "bin")
+packResourceDir += (baseDirectory.value / "data" -> "data")
