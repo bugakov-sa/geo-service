@@ -2,11 +2,11 @@ trait UsersDao {
 
   import Entity._
 
-  def create(user: UserData): Long = -1
+  def create(point: Point): Long = -1
 
-  def update(id: Long, newData: UserData): Option[UserData] = None
+  def update(id: Long, newData: Point): Option[Point] = None
 
-  def delete(id: Long): Option[UserData] = None
+  def delete(id: Long): Option[Point] = None
 
-  def select(id: Long): Option[UserData] = None
+  def select(id: Long): Option[Point] = None
 }
