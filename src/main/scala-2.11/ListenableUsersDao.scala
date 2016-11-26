@@ -6,12 +6,6 @@ trait ListenableUsersDao extends UsersDao {
 
   private def fire(event: UserEvent) = listeners.foreach(_.fire(event))
 
-  override def create(point: Point): Long = {
-    val userId = super.create(point)
-    fire(UserCreatedEvent(userId, point))
-    userId
-  }
-
   override def update(id: Long, newPoint: Point): Option[Point] = {
     val option = super.update(id, newPoint)
     option.foreach(oldPoint => fire(UserUpdatedEvent(id, oldPoint, newPoint)))
@@ -23,6 +17,4 @@ trait ListenableUsersDao extends UsersDao {
     option.foreach(point => fire(UserDeletedEvent(id, point)))
     option
   }
-
-  override def select(id: Long): Option[Point] = super.select(id)
 }

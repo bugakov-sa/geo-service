@@ -1,8 +1,8 @@
-import java.nio.file.Paths
+import java.nio.file.{Path, Paths}
 
 import scala.io.Source
 
-case class Configuration(host: String, port: Int)
+case class Configuration(host: String, port: Int, usersFilePath: Path, zonesFilePath: Path)
 
 object Configuration {
   val intellijIdeaPath = Paths.get(
@@ -18,17 +18,23 @@ object Configuration {
   )
 
   def read: Configuration = {
-    val src = Source.fromFile({
+    val settingsPath: Path = {
       if (intellijIdeaPath.toFile.exists)
         intellijIdeaPath
       else
         assemblyPath
-    }.toFile)
+    }
+    val src = Source.fromFile(settingsPath.toFile)
     val map = src.getLines.map(line => (
       line.split("=")(0).trim,
       line.split("=")(1).trim)
     ).toMap
     src.close
-    Configuration(map("host"), map("port") toInt)
+    Configuration(
+      map("host"),
+      map("port") toInt,
+      Paths.get(settingsPath.getParent.toString, map("usersFile")),
+      Paths.get(settingsPath.getParent.toString, map("zonesFile"))
+    )
   }
 }

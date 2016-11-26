@@ -17,15 +17,14 @@ object Controller {
 
   final case class StatRequest(lat: Float, lon: Float)
 
-  final case class UserCreatedResponse(userId: Long, point: Point)
-
-  final case class UserUpdatedResponse(userId: Long, oldPoint: Point, newPoint: Point)
+  final case class UserUpdatedResponse(userId: Long, oldPoint: Option[Point], newPoint: Point)
 
   final case class UserDeletedResponse(userId: Long, point: Point)
 
   final case class UserSelectedResponse(userId: Long, point: Point)
 
-  final case class ZoneStatResponse(count:Long)
+  final case class ZoneStatResponse(count: Long)
+
 }
 
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
@@ -34,7 +33,6 @@ trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   import Entity._
 
   implicit val userDataFormat = jsonFormat2(Point)
-  implicit val userCreatedFormat = jsonFormat2(UserCreatedResponse)
   implicit val userUpdatedFormat = jsonFormat3(UserUpdatedResponse)
   implicit val userDeletedFormat = jsonFormat2(UserDeletedResponse)
   implicit val userSelectedFormat = jsonFormat2(UserSelectedResponse)
@@ -47,25 +45,13 @@ class Controller(usersDao: UsersDao, zonesStat: ZonesStat) extends Directives wi
   import Entity._
 
   val route =
-    path("users" / "create") {
-      get {
-        parameters('lat.as[Float], 'lon.as[Float]).as(CreateUserRequest) { request =>
-          val point = Point(request.lat, request.lon)
-          val userId = usersDao.create(point)
-          complete((StatusCodes.OK, UserCreatedResponse(userId, point)))
-        }
-      }
-    } ~ path("users" / "update") {
+    path("users" / "update") {
       get {
         parameters('id.as[Long], 'lat.as[Float], 'lon.as[Float]).as(UpdateUserRequest) { request =>
           val newPoint = Point(request.lat, request.lon)
           val userId = request.userId
-          complete(
-            usersDao.update(userId, newPoint) match {
-              case None => (StatusCodes.NotFound, "Not found")
-              case Some(oldPoint) => (StatusCodes.OK, UserUpdatedResponse(userId, oldPoint, newPoint))
-            }
-          )
+          val oldPoint = usersDao.update(userId, newPoint)
+          complete((StatusCodes.OK, UserUpdatedResponse(userId, oldPoint, newPoint)))
         }
       }
     } ~ path("users" / "delete") {

@@ -10,8 +10,6 @@ object Entity {
 
   abstract trait UserEvent
 
-  case class UserCreatedEvent(userId: Long, point: Point) extends UserEvent
-
   case class UserUpdatedEvent(userId: Long, oldPoint: Point, newPoint: Point) extends UserEvent
 
   case class UserDeletedEvent(userId: Long, point: Point) extends UserEvent
