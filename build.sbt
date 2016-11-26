@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.1.7",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
   //http
-  "com.typesafe.akka" %% "akka-http-experimental" % "2.4.11"
+  "com.typesafe.akka" %% "akka-http-experimental" % "2.4.11",
+  "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.0"
 )
 
 packAutoSettings
