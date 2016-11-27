@@ -47,7 +47,7 @@ count(z) в момент времени t = число входов пользо
 
 Каждый запрос delete интерпретируется, как выход из зоны (если указанный в запросе ИД пользователя существует).
 
-Поскольку набор зон известен на момент старта приложения, можно на старте создать [scala.collection.immutable.HashMap](http://www.scala-lang.org/api/current/scala/collection/immutable/HashMap.html) с ключом (широта, долгота) и значением [AtomicLong](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/AtomicLong.html) и при каждом запросе update/delete изменять соответствующие счетчики.
+Поскольку набор зон известен на момент старта приложения, можно на старте создать [scala.collection.immutable.HashMap](http://www.scala-lang.org/api/current/scala/collection/immutable/HashMap.html) с ключом (широта, долгота) и значением [AtomicLong](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/AtomicLong.html) = 0 и при каждой операции update/delete изменять соответствующие счетчики.
 
 ### Алгоритмы генерации данных
 Реализованы на python 2.7. [/script](https://github.com/bugakov-sa/geo-service/blob/master/script)
