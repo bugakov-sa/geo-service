@@ -16,12 +16,12 @@ object InputData {
 
   def loadZones(zonesFilePath: Path) = {
     log.info("Reading zones")
-    val map = new scala.collection.mutable.HashMap[ZoneKey, ZoneData]()
+    var map = new scala.collection.immutable.HashMap[ZoneKey, ZoneData]()
     val src = Source.fromFile(zonesFilePath.toFile)
     for (line <- src.getLines) {
       try {
         val cells = line.split(DELIMITER)
-        map(ZoneKey(cells(0) toInt, cells(1) toInt)) = ZoneData(cells(2) toDouble)
+        map = map + (ZoneKey(cells(0) toInt, cells(1) toInt) -> ZoneData(cells(2) toDouble))
       }
       catch {
         case err: Throwable =>
@@ -30,7 +30,7 @@ object InputData {
     }
     log.info("Read {} zones", map.size)
     src.close
-    new InMemoryZonesRef(map.toMap)
+    new InMemoryZonesRef(map)
   }
 
   def loadUsers(usersFilePath: Path, usersDao: UsersDao) = {

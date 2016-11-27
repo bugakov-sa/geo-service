@@ -11,7 +11,7 @@ class ZonesStatService(zones: ZonesRef) extends UsersListener {
   private val stat = init(zones)
 
   private def init(zones: ZonesRef) = {
-    var res = Map[ZoneKey, AtomicLong]()
+    var res = scala.collection.immutable.HashMap[ZoneKey, AtomicLong]()
     for (key <- zones.keys) {
       res = res + (key -> new AtomicLong(0))
     }
