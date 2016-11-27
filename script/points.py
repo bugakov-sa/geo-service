@@ -1,6 +1,6 @@
 import random
 import math
-pointsAmount = 300
+pointsAmount = 100
 delimiter = ','
 with open('..\data\points.csv', 'w') as file:
     for i in xrange(0, pointsAmount):
