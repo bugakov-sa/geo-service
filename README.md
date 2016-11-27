@@ -108,4 +108,7 @@ count(z) в момент времени t = число входов пользо
 2. [points.py](https://github.com/bugakov-sa/geo-service/blob/master/script/points.py) - генерация тестового набора точек для визуализации с помощью сервиса [mapcustomizer](https://www.mapcustomizer.com/). Создает csv-файл [ponts.csv](https://github.com/bugakov-sa/geo-service/blob/master/data/points.csv) с колонками: широта, долгота. Содержимое этого файла можно скопировать в форму Bulk Entry (в правом верхнем углу на странице [mapcustomizer](https://www.mapcustomizer.com/)) Так мы можем визуально оценить, насколько случайно точки разбросаны по суше. Mapcustomizer отмечает только точки на суше. Поскольку земная поверхность спроецирована на прямоугольную карту, плотность точек на такой карте уменьшается при движении от экватора к полюсам.
 
 #### Генерация географической сетки
-Примитивный алгоритм. В качестве опорных точек взяты точки с целочисленными координатами. Реализация алгоритма: [zones.py](https://github.com/bugakov-sa/geo-service/blob/master/script/zones.py). Результат работы алгоритма: [zones.csv](https://github.com/bugakov-sa/geo-service/blob/master/data/zones.csv)
+###### Примитивный алгоритм. 
+В качестве опорных точек взяты точки с целочисленными координатами. Реализация алгоритма: [zones.py](https://github.com/bugakov-sa/geo-service/blob/master/script/zones.py). Результат работы алгоритма: [zones.csv](https://github.com/bugakov-sa/geo-service/blob/master/data/zones.csv)
+
+###### Продвинутый алгоритм (пункт 3 [Задания](https://github.com/bugakov-sa/geo-service/blob/master/%D0%A2%D0%B5%D1%81%D1%82%D0%BE%D0%B2%D0%BE%D0%B5%20%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20-%20%D0%B3%D0%B5%D0%BE%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81.pdf)).
