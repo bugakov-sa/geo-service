@@ -37,7 +37,15 @@ sbt pack
 /zones/count?lat=-45.8779978817&lon=33.5622549935
 
 ### Сложность выполнения запросов
-Константная, О(1). В случае запросов /users/update, /users/delete, /users/select выполняется обращение к хеш-таблице пользователей ([ConcurrentHashMap](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html)). В случае запроса /users/location - обращение к хеш-таблице пользователей и обращение к хеш-таблице геозон ([Immutable HashMap](http://www.scala-lang.org/api/current/scala/collection/immutable/HashMap.html)). В случае запроса /zones/count - обращение к хеш-таблице cчетчиков пользователей ([Immutable HashMap](http://www.scala-lang.org/api/current/scala/collection/immutable/HashMap.html)).
+Константная, О(1). 
+
+В случае запросов /users/update, /users/delete выполняется обращение к хеш-таблице пользователей ([ConcurrentHashMap](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html)) и к хеш-таблице cчетчиков пользователей ([Immutable HashMap](http://www.scala-lang.org/api/current/scala/collection/immutable/HashMap.html)). 
+
+В случае запроса /users/select выполняется обращение к хеш-таблице пользователей.
+
+В случае запроса /users/location - обращение к хеш-таблице пользователей и обращение к хеш-таблице геозон ([Immutable HashMap](http://www.scala-lang.org/api/current/scala/collection/immutable/HashMap.html)). 
+
+В случае запроса /zones/count - обращение к хеш-таблице cчетчиков пользователей.
 
 Расчет числа пользователей count(z) в геозоне z реализован из следующего соображения:
 
