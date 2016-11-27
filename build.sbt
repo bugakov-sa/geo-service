@@ -20,3 +20,4 @@ libraryDependencies ++= Seq(
 packAutoSettings
 packResourceDir += (baseDirectory.value / "conf" / "assembly" -> "bin")
 packResourceDir += (baseDirectory.value / "data" -> "data")
+packResourceDir += (baseDirectory.value / "script" -> "script")

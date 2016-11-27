@@ -1,10 +1,10 @@
 package testtask.entity
 
-case class Point(lat: Float, lon: Float)
+case class Point(lat: Double, lon: Double)
 
 case class ZoneKey(tileX: Int, tileY: Int)
 
-case class ZoneData(distanceError: Float)
+case class ZoneData(distanceError: Double)
 
 case class ZoneReport(count: Int)
 

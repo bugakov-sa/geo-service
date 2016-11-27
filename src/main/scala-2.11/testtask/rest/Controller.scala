@@ -44,7 +44,7 @@ class Controller(usersDao: UsersDao, zonesStat: ZonesStatService, testLocationSe
   val route =
     path("users" / "update") {
       get {
-        parameters('id.as[Long], 'lat.as[Float], 'lon.as[Float]) { (userId, lat, lon) =>
+        parameters('id.as[Long], 'lat.as[Double], 'lon.as[Double]) { (userId, lat, lon) =>
           val newPoint = Point(lat, lon)
           val oldPoint = usersDao.update(userId, newPoint)
           complete(UserUpdatedResponse(userId, oldPoint, newPoint))
@@ -72,7 +72,7 @@ class Controller(usersDao: UsersDao, zonesStat: ZonesStatService, testLocationSe
       }
     } ~ path("users" / "location") {
       get {
-        parameters('id.as[Long], 'lat.as[Float], 'lon.as[Float]) { (userId, lat, lon) => complete(
+        parameters('id.as[Long], 'lat.as[Double], 'lon.as[Double]) { (userId, lat, lon) => complete(
           testLocationService.test(userId, Point(lat, lon)) match {
             case None => NOT_FOUND_RESPONSE
             case Some(true) => TestLocationResponse("Near")
@@ -82,7 +82,7 @@ class Controller(usersDao: UsersDao, zonesStat: ZonesStatService, testLocationSe
       }
     } ~ path("zones" / "count") {
       get {
-        parameters('lat.as[Float], 'lon.as[Float]) { (lat, lon) => complete(
+        parameters('lat.as[Double], 'lon.as[Double]) { (lat, lon) => complete(
           zonesStat.count(Point(lat, lon)) match {
             case None => NOT_FOUND_RESPONSE
             case Some(count) => ZoneStatResponse(count)
