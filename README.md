@@ -101,11 +101,7 @@ count(z) в момент времени t = число входов пользо
 
 Тогда алгоритм генерации широты метки в серверном полушарии: lat = arcsin(I * (r * 2 * Pi / I) / (2 * Pi * R)) = arcsin(r).
 
-Алгоритм генерации меток пользователей реализован в двух вариантах:
-
-1. [users.py](https://github.com/bugakov-sa/geo-service/blob/master/script/users.py) - генерация таблицы для геосервиса. Создает csv-файл [users.csv](https://github.com/bugakov-sa/geo-service/blob/master/data/users.csv) с колонками: ИД пользователя, широта, долгота.
-
-2. [points.py](https://github.com/bugakov-sa/geo-service/blob/master/script/points.py) - генерация тестового набора точек для визуализации с помощью сервиса [mapcustomizer](https://www.mapcustomizer.com/). Создает csv-файл [ponts.csv](https://github.com/bugakov-sa/geo-service/blob/master/data/points.csv) с колонками: широта, долгота. Содержимое этого файла можно скопировать в форму Bulk Entry (в правом верхнем углу на странице [mapcustomizer](https://www.mapcustomizer.com/)) Так мы можем визуально оценить, насколько случайно точки разбросаны по суше. Mapcustomizer отмечает только точки на суше.
+Реализация алгоритма: [users.py](https://github.com/bugakov-sa/geo-service/blob/master/script/users.py). Результат работы алгоритма: [users.csv](https://github.com/bugakov-sa/geo-service/blob/master/data/users.csv).
 
 #### Генерация географической сетки
 ###### Примитивный алгоритм. 
