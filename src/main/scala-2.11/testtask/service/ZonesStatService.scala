@@ -22,15 +22,12 @@ class ZonesStatService(zones: ZonesRef) extends Consumer[UserEvent] {
 
   override def accept(event: UserEvent): Unit = event match {
     case UserUpdatedEvent(userId, oldPoint, newPoint) =>
-      if(oldPoint.isDefined)
+      if (oldPoint.isDefined)
         stat.get(zoneKey(oldPoint.get)).foreach(_.decrementAndGet())
       stat.get(zoneKey(newPoint)).foreach(_.incrementAndGet())
     case UserDeletedEvent(userId, point) =>
       stat.get(zoneKey(point)).foreach(_.decrementAndGet())
   }
 
-  def count(point: Point) = stat.get(zoneKey(point)) match {
-    case None => None
-    case Some(stat) => Some(stat.get())
-  }
+  def count(point: Point) = stat.get(zoneKey(point)).map(_.get)
 }
