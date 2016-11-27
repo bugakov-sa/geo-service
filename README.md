@@ -62,10 +62,10 @@ count(z) в момент времени t = число входов пользо
 
 В данном проекте не реализовано сохранение меток пользователей при завершении работы приложения.
 
-Приложение может быть доработано для реализации отказоустойчивого геосервиса. При этом не нужно будет менять бизнес-логику, в частности: [апи и код контроллера](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/rest/Controller.scala), [код расчета статистики](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/listener/impl/ZonesStatService.scala) и [код проверки местоположения пользователя](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/service/TestLocationService.scala). Порядок действий при реализации отказоустойчивости следующий:
+Приложение может быть доработано для реализации отказоустойчивого геосервиса. При этом не нужно будет менять бизнес-логику, в частности: [апи и код контроллера](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/rest/Controller.scala), [код расчета статистики](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/service/ZonesStatService.scala) и [код проверки местоположения пользователя](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/service/TestLocationService.scala). Порядок действий при реализации отказоустойчивости следующий:
 
 1. Задачу хранения меток пользователей и географической сетки переложить на СУБД. 10 миллионов записей - небольшой объем, можно использовать, как NoSQL, так и RDBMS, например, [Postres](https://www.postgresql.org/). Реализовать [UsersDao](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/dao/UsersDao.scala) и [ZonesRef](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/ref/ZonesRef.scala) для внешней БД.
-2. [Компонент расчета статистики](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/listener/impl/ZonesStatService.scala) выделить в отдельныое приложение. Назовем его StatService.
+2. [Компонент расчета статистики](https://github.com/bugakov-sa/geo-service/blob/master/src/main/scala-2.11/testtask/service/ZonesStatService.scala) выделить в отдельныое приложение. Назовем его StatService.
 3. В geo-service поддержать рассылку уведомлений об операциях update/delete нескольким инстансам StatService.
 4. Запустить два экземпляра геосервиса.
 5. Запустить два экземпляра статсервиса.
