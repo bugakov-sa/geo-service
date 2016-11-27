@@ -8,15 +8,7 @@ import testtask.ref.ZonesRef
 
 class ZonesStatService(zones: ZonesRef) extends Consumer[UserEvent] {
 
-  private val stat = init(zones)
-
-  private def init(zones: ZonesRef) = {
-    var res = scala.collection.immutable.HashMap[ZoneKey, AtomicLong]()
-    for (key <- zones.keys) {
-      res = res + (key -> new AtomicLong(0))
-    }
-    res
-  }
+  private val stat = zones.keys.map(k => (k, new AtomicLong(0))).toMap
 
   override def accept(event: UserEvent): Unit = event match {
     case UserUpdatedEvent(userId, oldPoint, newPoint) =>

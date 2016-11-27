@@ -16,7 +16,7 @@ object InputData {
 
   def loadZones(zonesFilePath: Path) = {
     log.info("Reading zones")
-    var map = new scala.collection.immutable.HashMap[ZoneKey, ZoneData]()
+    var map = Map[ZoneKey, ZoneData]()
     val src = Source.fromFile(zonesFilePath.toFile)
     for (line <- src.getLines) {
       try {
