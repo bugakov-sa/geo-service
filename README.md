@@ -3,6 +3,11 @@
 ## Стек технологий, сборка и запуск
 Проект разработан на стеке [Scala](https://www.scala-lang.org/) - [Akka-HTTP](http://doc.akka.io/docs/akka-http/current/scala.html) - [SBT](http://www.scala-sbt.org/)
 
+Для сборки приложения из исходников необходимо в директории geo-service выполнить команду
+```
+sbt pack
+```
+
 ## Алгоритмы генерации данных
 Реализованы на python 2.7. [/script](https://github.com/bugakov-sa/geo-service/blob/master/script)
 
