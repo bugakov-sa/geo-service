@@ -1,4 +1,6 @@
 package testtask {
+
+  import scala.math.{abs, floor}
   package entity {
 
     case class Point(lat: Double, lon: Double)
@@ -19,8 +21,8 @@ package testtask {
 
   package object entity {
     def zoneKey(point: Point) = ZoneKey(
-      math.abs(math.rint(point.lat).toInt),
-      math.rint(point.lon).toInt,
+      floor(abs(point.lat)).toInt,
+      floor(point.lon).toInt,
       point.lat < 0
     )
   }

@@ -21,11 +21,13 @@ object InputData {
     for (line <- src.getLines) {
       try {
         val cells = line.split(DELIMITER)
-        map = map + (ZoneKey(
-          cells(0) toInt,//широта
-          math.abs(cells(1) toInt),//долгота
-          cells(0).startsWith("-")//полушарие
-        ) -> ZoneData(cells(2) toDouble))
+        val lat = cells(0) toInt
+        val lon = cells(1) toInt
+        val distanceError = cells(2) toDouble
+
+        map = map +
+          (ZoneKey(lat, lon, false) -> ZoneData(distanceError)) +
+          (ZoneKey(lat, lon, true) -> ZoneData(distanceError))
       }
       catch {
         case err: Throwable =>
