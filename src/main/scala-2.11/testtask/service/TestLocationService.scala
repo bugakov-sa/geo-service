@@ -7,17 +7,22 @@ import testtask.ref.ZonesRef
 import math._
 
 class TestLocationService(usersDao: UsersDao, zonesRef: ZonesRef) {
+
   def test(userId: Long, point: Point) = {
-    val userPoint = usersDao.select(userId)
-    val zoneData = zonesRef.select(zoneKey(point))
-    if (userPoint.isEmpty || zoneData.isEmpty)
-      None
-    else
-      Some(sphereDist(userPoint.get, point) <= zoneData.get.distanceError)
+    for {
+      userPoint <- usersDao.select(userId)
+      zoneData <- zonesRef.select(zoneKey(point))
+    } yield sphereDist(userPoint, point) <= zoneData.distanceError
   }
 
   private val EARTH_RADIUS = 6371000
 
-  private def sphereDist(p1: Point, p2: Point) =
-    EARTH_RADIUS * acos(sin(p1.lat) * sin(p2.lat) + cos(p1.lat) * cos(p2.lat) * cos(p1.lon - p2.lon))
+  private def sphereDist(p1: Point, p2: Point) = {
+    val lat1Radians = toRadians(p1.lat)
+    val lat2Radians = toRadians(p2.lat)
+    val lon1Radians = toRadians(p1.lon)
+    val lon2Radians = toRadians(p2.lon)
+    EARTH_RADIUS * acos(sin(lat1Radians) * sin(lat2Radians) +
+      cos(lat1Radians) * cos(lat2Radians) * cos(lon1Radians - lon2Radians))
+  }
 }
