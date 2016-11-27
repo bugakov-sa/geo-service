@@ -1,14 +1,15 @@
 package testtask.dao.impl
 
-import testtask.entity._
+import java.util.function.Consumer
+
 import testtask.dao.UsersDao
-import testtask.listener.UsersListener
+import testtask.entity._
 
 trait ListenableUsersDao extends UsersDao {
 
-  protected val listeners: Seq[UsersListener]
+  protected val listeners: Seq[Consumer[UserEvent]]
 
-  private def fire(event: UserEvent) = listeners.foreach(_.fire(event))
+  private def fire(event: UserEvent) = listeners.foreach(_.accept(event))
 
   override def update(id: Long, newPoint: Point): Option[Point] = {
     val option = super.update(id, newPoint)

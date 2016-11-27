@@ -6,9 +6,8 @@ import akka.stream.ActorMaterializer
 import com.typesafe.scalalogging.Logger
 import conf.{Configuration, InputData}
 import testtask.dao.impl.{InMemoryUsersDao, ListenableUsersDao}
-import testtask.listener.impl.ZonesStatService
 import testtask.rest.Controller
-import testtask.service.TestLocationService
+import testtask.service.{TestLocationService, ZonesStatService}
 
 import scala.io.StdIn
 

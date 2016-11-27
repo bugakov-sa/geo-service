@@ -6,8 +6,7 @@ import akka.http.scaladsl.server.Directives
 import spray.json._
 import testtask.dao.UsersDao
 import testtask.entity._
-import testtask.listener.impl.ZonesStatService
-import testtask.service.TestLocationService
+import testtask.service.{TestLocationService, ZonesStatService}
 
 object Controller {
 

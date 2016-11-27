@@ -6,7 +6,7 @@ case class ZoneKey(tileX: Int, tileY: Int)
 
 case class ZoneData(distanceError: Double)
 
-case class ZoneReport(count: Int)
+case class ZoneStat(count: Int)
 
 abstract trait UserEvent
 

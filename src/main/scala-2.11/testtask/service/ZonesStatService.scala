@@ -1,12 +1,12 @@
-package testtask.listener.impl
+package testtask.service
 
 import java.util.concurrent.atomic.AtomicLong
+import java.util.function.Consumer
 
 import testtask.entity._
-import testtask.listener.UsersListener
 import testtask.ref.ZonesRef
 
-class ZonesStatService(zones: ZonesRef) extends UsersListener {
+class ZonesStatService(zones: ZonesRef) extends Consumer[UserEvent] {
 
   private val stat = init(zones)
 
@@ -20,7 +20,7 @@ class ZonesStatService(zones: ZonesRef) extends UsersListener {
 
   private def zoneKey(point: Point) = ZoneKey(point.lat.toInt, point.lon.toInt)
 
-  override def fire(event: UserEvent): Unit = event match {
+  override def accept(event: UserEvent): Unit = event match {
     case UserUpdatedEvent(userId, oldPoint, newPoint) =>
       if(oldPoint.isDefined)
         stat.get(zoneKey(oldPoint.get)).foreach(_.decrementAndGet())
