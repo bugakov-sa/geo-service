@@ -4,7 +4,7 @@ import java.nio.file.Path
 
 import com.typesafe.scalalogging.Logger
 import testtask.dao.UsersDao
-import testtask.entity.{Point, ZoneData, ZoneKey}
+import testtask.entity._
 import testtask.ref.impl.InMemoryZonesRef
 
 import scala.io.Source
@@ -21,7 +21,11 @@ object InputData {
     for (line <- src.getLines) {
       try {
         val cells = line.split(DELIMITER)
-        map = map + (ZoneKey(cells(0) toInt, cells(1) toInt) -> ZoneData(cells(2) toDouble))
+        map = map + (ZoneKey(
+          cells(0) toInt,//широта
+          math.abs(cells(1) toInt),//долгота
+          cells(0).startsWith("-")//полушарие
+        ) -> ZoneData(cells(2) toDouble))
       }
       catch {
         case err: Throwable =>

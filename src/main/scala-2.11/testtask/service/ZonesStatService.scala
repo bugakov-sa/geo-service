@@ -18,8 +18,6 @@ class ZonesStatService(zones: ZonesRef) extends Consumer[UserEvent] {
     res
   }
 
-  private def zoneKey(point: Point) = ZoneKey(point.lat.toInt, point.lon.toInt)
-
   override def accept(event: UserEvent): Unit = event match {
     case UserUpdatedEvent(userId, oldPoint, newPoint) =>
       if (oldPoint.isDefined)
