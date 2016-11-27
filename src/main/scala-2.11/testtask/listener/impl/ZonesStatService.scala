@@ -22,7 +22,8 @@ class ZonesStatService(zones: ZonesRef) extends UsersListener {
 
   override def fire(event: UserEvent): Unit = event match {
     case UserUpdatedEvent(userId, oldPoint, newPoint) =>
-      stat.get(zoneKey(oldPoint)).foreach(_.decrementAndGet())
+      if(oldPoint.isDefined)
+        stat.get(zoneKey(oldPoint.get)).foreach(_.decrementAndGet())
       stat.get(zoneKey(newPoint)).foreach(_.incrementAndGet())
     case UserDeletedEvent(userId, point) =>
       stat.get(zoneKey(point)).foreach(_.decrementAndGet())

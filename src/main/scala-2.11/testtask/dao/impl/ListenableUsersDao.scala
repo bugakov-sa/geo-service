@@ -12,7 +12,7 @@ trait ListenableUsersDao extends UsersDao {
 
   override def update(id: Long, newPoint: Point): Option[Point] = {
     val option = super.update(id, newPoint)
-    option.foreach(oldPoint => fire(UserUpdatedEvent(id, oldPoint, newPoint)))
+    fire(UserUpdatedEvent(id, option, newPoint))
     option
   }
 

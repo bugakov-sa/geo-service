@@ -10,6 +10,6 @@ case class ZoneReport(count: Int)
 
 abstract trait UserEvent
 
-case class UserUpdatedEvent(userId: Long, oldPoint: Point, newPoint: Point) extends UserEvent
+case class UserUpdatedEvent(userId: Long, oldPoint: Option[Point], newPoint: Point) extends UserEvent
 
 case class UserDeletedEvent(userId: Long, point: Point) extends UserEvent
