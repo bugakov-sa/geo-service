@@ -28,9 +28,12 @@ object Application extends App {
   implicit val system = ActorSystem("my-system")
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
+
+  log.info("Starting server")
+
   val bindingFuture = Http().bindAndHandle(controller.route, conf.host, conf.port)
 
-  log.info("Server online at http://{}:{}/", conf.host, conf.port.toString)
+  log.info(s"Server online at http://${conf.host}:${conf.port}/")
   log.info("Press ENTER to stop...")
 
   StdIn.readLine()
